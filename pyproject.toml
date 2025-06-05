@@ -14,7 +14,8 @@ dependencies = [
     "python-dotenv",
     "tqdm",
     "reportlab",
-    "flask"
+    "flask",
+    "click"
 ]
 
 [project.optional-dependencies]

@@ -13,7 +13,7 @@ UPLOAD_DIR = ROOT_DIR / "uploads"
 UPLOAD_DIR.mkdir(exist_ok=True)
 
 # External
-FFMPEG_PATH = os.getenv("FFMPEG_PATH", r"C:\ffmpeg\bin\ffmpeg.exe")
+FFMPEG_PATH = os.getenv("FFMPEG_PATH", "ffmpeg")
 OPENAI_KEY  = os.getenv("OPENAI_API_KEY", "")
 
 # Audio split params

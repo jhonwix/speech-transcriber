@@ -4,3 +4,4 @@ python-dotenv
 tqdm
 reportlab
 flask
+click
