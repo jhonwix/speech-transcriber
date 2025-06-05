@@ -1,0 +1,38 @@
+Metadata-Version: 2.4
+Name: speech-transcriber
+Version: 0.1.0
+Summary: Video to PDF transcription (ES‑LatAM)
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: openai>=1.14
+Requires-Dist: pydub>=0.25
+Requires-Dist: python-dotenv
+Requires-Dist: tqdm
+Requires-Dist: reportlab
+Requires-Dist: flask
+Provides-Extra: dev
+Requires-Dist: pytest; extra == "dev"
+Requires-Dist: black; extra == "dev"
+Requires-Dist: flake8; extra == "dev"
+
+# Speech Transcriber 📝📼
+
+Convierte videos MP4 a transcripciones en PDF limpias (ES‑LatAM).
+
+## Instalación
+
+```bash
+git clone https://github.com/tu‑usuario/speech‑transcriber.git
+cd speech‑transcriber
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env   # añade tu OPENAI_API_KEY
+
+## Uso CLI
+python -m speech_transcriber.cli  path/al/video.mp4
+
+## Uso WEB
+flask --app speech_transcriber.webapp.routes run
+
+## Pruebas
+pytest

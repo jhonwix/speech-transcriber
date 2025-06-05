@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/speech_transcriber/__init__.py
+src/speech_transcriber/cli.py
+src/speech_transcriber/config.py
+src/speech_transcriber.egg-info/PKG-INFO
+src/speech_transcriber.egg-info/SOURCES.txt
+src/speech_transcriber.egg-info/dependency_links.txt
+src/speech_transcriber.egg-info/requires.txt
+src/speech_transcriber.egg-info/top_level.txt

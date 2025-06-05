@@ -1,0 +1,71 @@
+/* ---------- Color system ---------- */
+:root{
+    --primary:#0866ff;
+    --bg:#f0f2f5;
+    --radius:10px;
+  }
+  
+  /* ---------- Base ---------- */
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:system-ui,sans-serif;
+    background:var(--bg);
+    color:#1c1e21;
+    line-height:1.5;
+    max-width:700px;
+    margin:auto;
+    padding:1rem;
+  }
+  header{text-align:center;margin-bottom:1rem}
+  h1{color:var(--primary);font-size:2rem;margin-bottom:.25rem}
+  .tagline{color:#65676b}
+  
+  /* ---------- Buttons ---------- */
+  button{
+    margin-top:1rem;
+    padding:.6rem 1.2rem;
+    border:none;
+    border-radius:var(--radius);
+    background:var(--primary);
+    color:#fff;
+    font-weight:600;
+    cursor:pointer;
+    transition:opacity .2s;
+  }
+  button:disabled{opacity:.5;cursor:not-allowed}
+  
+  /* ---------- Dropzone ---------- */
+  .dropzone{
+    background:#fff;
+    border:2px dashed #ccd0d5;
+    border-radius:var(--radius);
+    padding:2rem;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .2s,background .2s;
+    margin-bottom:1rem;
+  }
+  .dropzone.hover{border-color:var(--primary);background:#e6f0ff}
+  
+  /* ---------- File list & progress ---------- */
+  #fileList{list-style:none;margin-top:1rem}
+  #fileList li{margin-bottom:.5rem;font-size:.9rem}
+  progress{width:100%;height:1rem;accent-color:var(--primary)}
+  
+  /* ---------- Flash messages ---------- */
+  .flash{list-style:none;margin:1rem 0}
+  .flash li.warning{color:#d03801}
+  
+  /* ---------- Results ---------- */
+  .results{margin-top:2rem}
+  .results ul{list-style:none}
+  .results li{margin:.4rem 0}
+  .results a{color:var(--primary);text-decoration:none}
+  .results a:hover{text-decoration:underline}
+  
+  /* ---------- Responsive ---------- */
+  @media(max-width:480px){
+    .dropzone{padding:1.2rem}
+    h1{font-size:1.5rem}
+  }
+  

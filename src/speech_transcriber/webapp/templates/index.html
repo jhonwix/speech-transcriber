@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Speech Transcriber</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Speech Transcriber JWOG</h1>
+    <p class="tagline">Convierte vídeos MP4 a PDF (ES‑Latam)</p>
+  </header>
+
+  <!-- ---------------- FORM ---------------- -->
+  <form id="uploadForm" enctype="multipart/form-data">
+    <div id="dropzone" class="dropzone">
+      <p>Suelta archivos aquí o haz clic para elegir</p>
+      <input id="fileInput" type="file" name="videos" accept="video/mp4" multiple hidden>
+    </div>
+
+    <ul id="fileList"></ul>
+    <button id="submitBtn" type="submit" disabled>Subir y Transcribir</button>
+  </form>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash">
+        {% for cat,msg in messages %}
+          <li class="{{cat}}">{{msg}}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <!-- Previous results (page reload) -->
+  {% if outputs %}
+  <section class="results">
+    <h2>PDFs generados</h2>
+    <ul>
+      {% for o in outputs %}
+        <li>{{ o.video }} →
+            <a href="{{ url_for('web.download', filename=o.pdf) }}" target="_blank">
+              Descargar PDF
+            </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+<script>
+const dz   = document.getElementById('dropzone');
+const inp  = document.getElementById('fileInput');
+const list = document.getElementById('fileList');
+const btn  = document.getElementById('submitBtn');
+let files  = [];
+
+/* --- drag & drop behaviour --- */
+dz.onclick = ()=>inp.click();
+['dragenter','dragover'].forEach(ev=>dz.addEventListener(ev,e=>{
+  e.preventDefault(); dz.classList.add('hover');
+}));
+['dragleave','drop'].forEach(ev=>dz.addEventListener(ev,e=>{
+  e.preventDefault(); dz.classList.remove('hover');
+}));
+dz.addEventListener('drop',e=>{ files=[...e.dataTransfer.files]; render(); });
+inp.addEventListener('change',e=>{ files=[...e.target.files]; render(); });
+
+function render(){
+  list.innerHTML='';
+  files.forEach(f=>{
+    const li=document.createElement('li');
+    li.dataset.name=f.name;
+    li.innerHTML=`${f.name} <progress value="0" max="100"></progress> <span>0%</span>`;
+    list.appendChild(li);
+  });
+  btn.disabled=!files.length;
+}
+
+/* --- submit with progress polling --- */
+document.getElementById('uploadForm').addEventListener('submit',async e=>{
+  e.preventDefault(); if(!files.length) return;
+  btn.disabled=true;
+
+  const fd=new FormData();
+  files.forEach(f=>fd.append('videos',f,f.name));
+
+  const res=await fetch('/upload',{method:'POST',body:fd});
+  const {job_id}=await res.json();
+
+  const timer=setInterval(async ()=>{
+    const r=await fetch(`/progress/${job_id}`);
+    const {progress,outputs}=await r.json();
+
+    list.querySelectorAll('li').forEach(li=>{
+      li.querySelector('progress').value=progress;
+      li.querySelector('span').textContent=` ${progress}%`;
+    });
+
+    if(progress>=100){
+      clearInterval(timer);
+      outputs.forEach(o=>{
+        const li=list.querySelector(`li[data-name="${o.video}"]`);
+        if(li){
+          li.innerHTML=`${o.video} → <a href="/uploads/${o.pdf}" target="_blank">Descargar PDF</a>`;
+        }
+      });
+      btn.disabled=false;      // permitir nuevos uploads
+    }
+  },1000);
+});
+</script>
+</body>
+</html>
