@@ -5,14 +5,13 @@ from pathlib import Path
 from typing import List
 from openai import OpenAI
 from ..config import OPENAI_KEY
-from ..config import TEMPERATURE  # defined below
+from ..config import TEMPERATURE
 # prompts
 PROMPT_BASE = (
     "Transcribe en español latino. Mantén signos ¿¡. "
     "Términos técnicos: UiPath, MVP, API, RPA.\n\n"
 )
 MODEL_TRANS = "gpt-4o-transcribe"
-TEMPERATURE = 0
 
 client = OpenAI(api_key=OPENAI_KEY)
 
