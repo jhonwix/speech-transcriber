@@ -3,3 +3,8 @@ __pycache__/
 .env
 .venv/
 uploads/
+*.mp4
+*.zip
+*.rar
+*.bin
+*.exe
